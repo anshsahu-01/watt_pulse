@@ -1,77 +1,76 @@
 import { NextResponse } from "next/server";
+import { appendCallbackRequest } from "@/lib/callback-store";
+import { createMailTransport, getAdminAddress } from "@/lib/mailer";
 
-const TWILIO_BASE_URL = "https://api.twilio.com/2010-04-01/Accounts";
+export const runtime = "nodejs";
 
-function formatCallbackMessage({ name, phone, note }) {
-  return [
-    "New Watt Pulse callback request.",
-    `Name: ${name}`,
-    `Phone: ${phone}`,
-    `Info: ${note || "No extra details provided."}`,
-  ].join("\n");
+function formatTimestamp(date) {
+  return new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
+
+function isValidPhone(phone) {
+  return /^\d{10}$/.test(phone);
 }
 
 export async function POST(request) {
-  const { name, phone, note } = await request.json();
+  const { phone, message = "" } = await request.json();
+  const trimmedPhone = String(phone || "").trim();
+  const trimmedMessage = String(message || "").trim();
 
-  if (!name || !phone) {
+  if (!trimmedPhone) {
     return NextResponse.json(
-      { message: "Name and mobile number are required." },
+      { success: false, message: "Phone number is required." },
       { status: 400 },
     );
   }
 
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const fromNumber = process.env.TWILIO_FROM_NUMBER;
-  const toNumber = process.env.TWILIO_TO_NUMBER;
-
-  if (!accountSid || !authToken || !fromNumber || !toNumber) {
+  if (!isValidPhone(trimmedPhone)) {
     return NextResponse.json(
       {
-        message:
-          "Callback SMS is not configured yet. Add Twilio credentials to enable it.",
+        success: false,
+        message: "Phone number must be numeric and exactly 10 digits.",
       },
-      { status: 500 },
+      { status: 400 },
     );
   }
 
-  const body = new URLSearchParams({
-    To: toNumber,
-    From: fromNumber,
-    Body: formatCallbackMessage({ name, phone, note }),
-  });
+  const createdAt = new Date();
 
   try {
-    const response = await fetch(
-      `${TWILIO_BASE_URL}/${accountSid}/Messages.json`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${Buffer.from(`${accountSid}:${authToken}`).toString("base64")}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body,
-      },
-    );
+    const adminAddress = getAdminAddress();
+    const transporter = createMailTransport();
 
-    if (!response.ok) {
-      const detail = await response.text();
-      return NextResponse.json(
-        {
-          message: "Unable to send the callback SMS right now.",
-          detail,
-        },
-        { status: 500 },
-      );
-    }
-
-    return NextResponse.json({
-      message: "Callback request sent successfully.",
+    await transporter.sendMail({
+      from: adminAddress,
+      to: adminAddress,
+      subject: "New Callback Request",
+      text: [
+        "A new callback request was submitted.",
+        "",
+        `Phone number: ${trimmedPhone}`,
+        `Message: ${trimmedMessage || "No message provided."}`,
+        `Timestamp: ${formatTimestamp(createdAt)}`,
+      ].join("\n"),
     });
-  } catch {
+
+    await appendCallbackRequest({
+      phone: trimmedPhone,
+      message: trimmedMessage,
+      createdAt: createdAt.toISOString(),
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
     return NextResponse.json(
-      { message: "Unable to reach the SMS service right now." },
+      {
+        success: false,
+        message: "Unable to submit callback request right now.",
+        detail:
+          error instanceof Error ? error.message : "Unexpected server error.",
+      },
       { status: 500 },
     );
   }

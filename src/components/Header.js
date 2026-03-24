@@ -94,7 +94,7 @@ export default function Header({ title, eyebrow, actions, user, onMenuClick }) {
   const initial = user?.name?.charAt(0)?.toUpperCase() || "U";
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-40 flex flex-col gap-4 border-b border-[#dfe5f1] bg-white px-5 py-4 md:flex-row md:items-center md:justify-between md:px-7 xl:left-[290px] xl:px-8 dark:border-[#2d2d2d] dark:bg-[#1f1f1f]">
+    <header className="fixed left-0 right-0 top-0 z-40 flex flex-col gap-4 border-b border-[#dfe5f1] bg-white px-5 py-3 md:flex-row md:items-center md:justify-between md:px-7 xl:left-[290px] xl:px-8 dark:border-[#2d2d2d] dark:bg-[#1f1f1f]">
       <div className="flex items-center gap-4">
         <button
           type="button"
@@ -113,7 +113,7 @@ export default function Header({ title, eyebrow, actions, user, onMenuClick }) {
               {eyebrow}
             </div>
           ) : null}
-          <h1 className="mt-1 text-3xl font-semibold tracking-[-0.03em] text-[#22304b] dark:text-white xl:text-4xl">
+          <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-[#22304b] dark:text-white xl:text-3xl">
             {title}
           </h1>
         </div>

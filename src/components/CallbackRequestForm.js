@@ -3,18 +3,13 @@
 import { useState, useTransition } from "react";
 
 const initialState = {
-  name: "",
   phone: "",
-  note: "",
+  message: "",
 };
 
-export default function CallbackRequestForm({ user }) {
-  const [form, setForm] = useState({
-    ...initialState,
-    name: user?.name || "",
-  });
+export default function CallbackRequestForm() {
+  const [form, setForm] = useState(initialState);
   const [status, setStatus] = useState("");
-  const [detail, setDetail] = useState("");
   const [isPending, startTransition] = useTransition();
 
   function updateField(event) {
@@ -25,7 +20,6 @@ export default function CallbackRequestForm({ user }) {
   function handleSubmit(event) {
     event.preventDefault();
     setStatus("");
-    setDetail("");
 
     startTransition(async () => {
       const response = await fetch("/api/callback", {
@@ -37,16 +31,18 @@ export default function CallbackRequestForm({ user }) {
       });
 
       const payload = await response.json();
-      setStatus(payload.message || "Unable to send callback request.");
-      setDetail(payload.detail || "");
 
-      if (response.ok) {
-        setForm((current) => ({
-          ...current,
-          phone: "",
-          note: "",
-        }));
+      if (response.ok && payload.success) {
+        setStatus("Callback request submitted successfully.");
+        setForm(initialState);
+        window.alert("Callback request submitted successfully.");
+        return;
       }
+
+      const message =
+        payload.message || "Unable to submit callback request right now.";
+      setStatus(message);
+      window.alert(message);
     });
   }
 
@@ -57,58 +53,49 @@ export default function CallbackRequestForm({ user }) {
     >
       <div className="mb-6">
         <h3 className="text-[1.6rem] font-semibold text-[#22304b] dark:text-white">
-          Book A Callback
+          Request A Callback
         </h3>
         <p className="mt-2 text-[0.98rem] leading-7 text-[#67758f] dark:text-[#9aa4b8]">
-          Submit your mobile number and a short note. The request can be sent as an SMS to your support number once the SMS gateway is configured.
+          Share your phone number and an optional message. Our team will review the request and reach out.
         </p>
       </div>
 
       <div className="grid gap-5">
         <label className="grid gap-2">
           <span className="text-sm font-semibold text-[#22304b] dark:text-white">
-            Name
+            Phone Number
           </span>
           <input
-            name="name"
-            value={form.name}
-            onChange={updateField}
-            className="rounded-2xl border border-[#d9dfeb] bg-white px-4 py-3.5 text-base text-[#22304b] outline-none dark:border-[#4a4a4a] dark:bg-[#2b2b2b] dark:text-white"
-            required
-          />
-        </label>
-        <label className="grid gap-2">
-          <span className="text-sm font-semibold text-[#22304b] dark:text-white">
-            Mobile Number
-          </span>
-          <input
+            type="tel"
             name="phone"
             value={form.phone}
             onChange={updateField}
+            inputMode="numeric"
+            pattern="[0-9]{10}"
+            maxLength={10}
             className="rounded-2xl border border-[#d9dfeb] bg-white px-4 py-3.5 text-base text-[#22304b] outline-none dark:border-[#4a4a4a] dark:bg-[#2b2b2b] dark:text-white"
-            placeholder="+91XXXXXXXXXX"
+            placeholder="9876543210"
             required
           />
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-semibold text-[#22304b] dark:text-white">
-            Small Information
+            Message
           </span>
           <textarea
-            name="note"
-            value={form.note}
+            name="message"
+            value={form.message}
             onChange={updateField}
             rows={4}
             className="rounded-2xl border border-[#d9dfeb] bg-white px-4 py-3.5 text-base text-[#22304b] outline-none dark:border-[#4a4a4a] dark:bg-[#2b2b2b] dark:text-white"
-            placeholder="Tell us what service or issue you want a callback for."
+            placeholder="Tell us what you need help with."
           />
         </label>
       </div>
 
       {status ? (
         <div className="mt-5 rounded-2xl border border-[#d9dfeb] bg-[#f6f8fd] px-4 py-3 text-sm text-[#22304b] dark:border-[#4a4a4a] dark:bg-[#2b2b2b] dark:text-white">
-          <div>{status}</div>
-          {detail ? <div className="mt-2 text-xs opacity-80">{detail}</div> : null}
+          {status}
         </div>
       ) : null}
 
@@ -117,7 +104,7 @@ export default function CallbackRequestForm({ user }) {
         disabled={isPending}
         className="mt-6 w-full rounded-2xl bg-[#8bc0f1] px-5 py-4 text-lg font-medium text-[#10131a] transition hover:bg-[#79b4ea] disabled:opacity-70"
       >
-        {isPending ? "Submitting..." : "Request Callback"}
+        {isPending ? "Submitting..." : "Submit Callback Request"}
       </button>
     </form>
   );

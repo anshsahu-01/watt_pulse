@@ -48,6 +48,7 @@ export default function ContactForm({ user }) {
           subject: "",
           message: "",
         }));
+        window.alert("Message sent successfully.");
       }
     });
   }
