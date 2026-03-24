@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #f4f6fb;
@@ -44,12 +45,32 @@ html {
   scroll-behavior: smooth;
 }
 
+html.dark {
+  --background: #121212;
+  --surface: #242424;
+  --surface-strong: #1f1f1f;
+  --surface-dark: #191919;
+  --foreground: #f4f7ff;
+  --muted: #9aa4b8;
+  --line: #353535;
+  --brand: #2d6bff;
+  --brand-strong: #4b83ff;
+  --brand-soft: #1f2740;
+  --water: #2d6bff;
+  --energy: #5f3dc4;
+  --accent: #202020;
+  --danger: #ef4444;
+}
+
 body {
   min-height: 100vh;
   margin: 0;
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 a {

@@ -52,7 +52,17 @@ export async function getCurrentUser() {
   }
 
   const user = await User.findById(session.userId).select("-passwordHash").lean();
-  return user;
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: String(user._id),
+    name: user.name,
+    email: user.email,
+    notificationsEnabled: user.notificationsEnabled ?? true,
+  };
 }
 
 export async function requireUser() {

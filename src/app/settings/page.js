@@ -1,62 +1,34 @@
 import AppShell from "@/components/AppShell";
 import { requireUser } from "@/lib/auth";
-import { getDashboardData } from "@/lib/dashboard";
-
-const settings = [
-  {
-    title: "Data Mode",
-    value: "Live Demo",
-    detail: "Current values power the dashboard, reports, and alerts view.",
-  },
-  {
-    title: "Session Mode",
-    value: "Cookie Auth",
-    detail: "Login state is stored in an httpOnly session cookie.",
-  },
-  {
-    title: "Telemetry Source",
-    value: "Usage Feed",
-    detail: "Dashboard values stay consistent across overview, reports, and charts.",
-  },
-  {
-    title: "Protection",
-    value: "Authenticated Routes",
-    detail: "Dashboard pages redirect to login when no active session exists.",
-  },
-];
+import SettingsForm from "@/components/SettingsForm";
 
 export default async function SettingsPage() {
   const user = await requireUser();
-  const data = await getDashboardData();
 
   return (
     <AppShell
       pathname="/settings"
       user={user}
       title="SETTINGS"
-      eyebrow="System Configuration"
+      eyebrow="Account Settings"
     >
-      <section className="grid gap-5 md:grid-cols-2">
-        {settings.map((item) => (
-          <article
-            key={item.title}
-            className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-6 shadow-[0_12px_35px_rgba(24,39,75,0.06)]"
-          >
-            <div className="text-sm text-[#66738f]">{item.title}</div>
-            <div className="mt-3 text-2xl font-semibold text-[#22304b]">{item.value}</div>
-            <p className="mt-3 text-sm leading-6 text-[#66738f]">{item.detail}</p>
-          </article>
-        ))}
-      </section>
+      <section className="grid gap-8 xl:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="flex flex-col items-center gap-6 rounded-[1.5rem] border border-[#dfe5f1] bg-white p-8 shadow-[0_12px_35px_rgba(24,39,75,0.06)] dark:border-[#353535] dark:bg-[#242424]">
+          <div className="grid h-36 w-36 place-items-center rounded-full border-4 border-[#2d6bff] bg-[#eef3ff] text-5xl font-semibold text-[#22304b] dark:bg-[#1f1f1f] dark:text-white">
+            {user.name?.charAt(0)?.toUpperCase() || "U"}
+          </div>
+          <div className="text-center">
+            <div className="text-xl font-semibold text-[#22304b] dark:text-white">
+              {user.name}
+            </div>
+            <div className="mt-2 text-sm text-[#6b7890] dark:text-[#9aa4b8]">
+              {user.email}
+            </div>
+          </div>
+        </aside>
 
-      <article className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-6 shadow-[0_12px_35px_rgba(24,39,75,0.06)]">
-        <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#22304b]">
-          Current dataset
-        </h2>
-        <p className="mt-4 text-sm leading-7 text-[#66738f]">
-          Site: {data.siteName} | Location: {data.location} | Devices: {data.totalDevices}
-        </p>
-      </article>
+        <SettingsForm user={user} />
+      </section>
     </AppShell>
   );
 }

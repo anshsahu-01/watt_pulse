@@ -1,4 +1,5 @@
 import "./globals.css";
+import ThemeBootstrap from "@/components/ThemeBootstrap";
 
 export const metadata = {
   title: "Watt Pulse",
@@ -8,8 +9,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full">
-      <body>{children}</body>
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body>
+        <ThemeBootstrap />
+        {children}
+      </body>
     </html>
   );
 }

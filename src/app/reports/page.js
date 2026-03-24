@@ -1,4 +1,6 @@
 import AppShell from "@/components/AppShell";
+import AreaChart from "@/components/AreaChart";
+import Card from "@/components/Card";
 import { requireUser } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard";
 
@@ -6,48 +8,54 @@ export default async function ReportsPage() {
   const user = await requireUser();
   const data = await getDashboardData();
 
+  const chartData = {
+    monthlyElectricity: data.monthlyTrends.map((item) => item.electricity),
+    monthlyWater: data.monthlyTrends.map((item) => item.water),
+  };
+
+  const weeklyRows = [
+    { label: "Week 1", electricity: 75, water: 600, cost: 45 },
+    { label: "Week 2", electricity: 80, water: 650, cost: 48 },
+    { label: "Week 3", electricity: 70, water: 580, cost: 42 },
+    { label: "Week 4", electricity: 95, water: 670, cost: 52 },
+  ];
+
   return (
     <AppShell
       pathname="/reports"
       user={user}
       title="REPORTS"
-      eyebrow="Monthly Summaries"
+      eyebrow="Usage Reports"
     >
-      <section className="grid gap-5 xl:grid-cols-3">
-        {data.reports.map((report) => (
-          <article
-            key={report.month}
-            className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-6 shadow-[0_12px_35px_rgba(24,39,75,0.06)]"
+      <section className="grid gap-4 xl:grid-cols-5">
+        <Card title="Total Electricity" value={data.electricityUsage} suffix="kWh" detail="" />
+        <Card title="Total Water" value={data.waterUsage} suffix="L" detail="" />
+        <Card title="Carbon Footprint" value="150" suffix="kg CO2" detail="" />
+        <Card title="Avg Daily Usage" value="75 kWh / 600 L / 5 kg CO2" detail="" />
+        <Card title="Alerts" value={data.alertsCount} detail="" />
+      </section>
+
+      <section className="overflow-hidden rounded-[1.5rem] border border-[#dfe5f1] bg-white shadow-[0_12px_35px_rgba(24,39,75,0.06)] dark:border-[#353535] dark:bg-[#242424]">
+        <div className="grid grid-cols-4 bg-[#5b9af0] px-6 py-4 text-center text-[1.1rem] font-semibold text-white">
+          <div>Week</div>
+          <div>Electricity (kWh)</div>
+          <div>Water (Liters)</div>
+          <div>Cost ($)</div>
+        </div>
+        {weeklyRows.map((row) => (
+          <div
+            key={row.label}
+            className="grid grid-cols-4 border-t border-[#e5e9f2] px-6 py-5 text-center text-[1.05rem] text-[#22304b] dark:border-[#353535] dark:text-white"
           >
-            <div className="text-sm uppercase tracking-[0.24em] text-[#5a4fd3]">
-              {report.month}
-            </div>
-            <div className="mt-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-[#66738f]">Electricity cost</span>
-                <span className="metric-text text-lg font-semibold text-[#22304b]">
-                  {report.electricityCost}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-[#66738f]">Water usage</span>
-                <span className="metric-text text-lg font-semibold text-[#22304b]">
-                  {report.waterUsage}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-[#66738f]">Carbon footprint</span>
-                <span className="metric-text text-lg font-semibold text-[#22304b]">
-                  {report.carbon}
-                </span>
-              </div>
-            </div>
-            <p className="mt-5 rounded-[1.25rem] border border-[#e4e9f4] bg-[#f9fbff] px-4 py-4 text-sm leading-6 text-[#66738f]">
-              {report.note}
-            </p>
-          </article>
+            <div>{row.label}</div>
+            <div>{row.electricity}</div>
+            <div>{row.water}</div>
+            <div>{row.cost}</div>
+          </div>
         ))}
       </section>
+
+      <AreaChart data={chartData} title="Monthly Usage Trend" />
     </AppShell>
   );
 }

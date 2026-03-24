@@ -26,7 +26,7 @@ export default async function DashboardPage() {
       actions={
         <Link
           href="/reports"
-          className="rounded-full border border-[#dbe1ef] bg-white px-4 py-2 text-sm font-medium text-[#22304b] transition hover:bg-[#f5f7fd]"
+          className="rounded-full border border-[#dbe1ef] bg-white px-4 py-2 text-sm font-medium text-[#22304b] transition hover:bg-[#f5f7fd] dark:border-[#353535] dark:bg-[#242424] dark:text-white dark:hover:bg-[#2b2b2b]"
         >
           Reports
         </Link>
@@ -55,8 +55,8 @@ export default async function DashboardPage() {
       </div>
 
       <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <article className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-6 shadow-[0_12px_35px_rgba(24,39,75,0.06)]">
-          <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#22304b]">
+        <article className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-6 shadow-[0_12px_35px_rgba(24,39,75,0.06)] dark:border-[#353535] dark:bg-[#242424]">
+          <h2 className="text-[1.9rem] font-semibold tracking-[-0.03em] text-[#22304b] dark:text-white">
             Current Alerts
           </h2>
           <div className="mt-5 space-y-3">
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="font-medium">{alert.title}</div>
-                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em]">
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] dark:bg-[#1f1f1f]">
                     {alert.level}
                   </span>
                 </div>
@@ -77,21 +77,21 @@ export default async function DashboardPage() {
           </div>
         </article>
 
-        <article className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-6 shadow-[0_12px_35px_rgba(24,39,75,0.06)]">
-          <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#22304b]">
+        <article className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-6 shadow-[0_12px_35px_rgba(24,39,75,0.06)] dark:border-[#353535] dark:bg-[#242424]">
+          <h2 className="text-[1.9rem] font-semibold tracking-[-0.03em] text-[#22304b] dark:text-white">
             Recent Reports
           </h2>
           <div className="mt-5 space-y-3">
             {data.reports.map((report, index) => (
               <div
                 key={report.month}
-                className="rounded-[1.25rem] border border-[#e4e9f4] bg-[#f9fbff] px-4 py-4"
+                className="rounded-[1.25rem] border border-[#e4e9f4] bg-[#f9fbff] px-4 py-4 dark:border-[#353535] dark:bg-[#2b2b2b]"
               >
                 <div className="metric-text text-xs text-[#5a4fd3]">
                   Report 0{index + 1}
                 </div>
-                <p className="mt-2 text-base font-semibold text-[#22304b]">{report.month}</p>
-                <p className="mt-2 text-sm leading-6 text-[#67758f]">{report.note}</p>
+                <p className="mt-2 text-base font-semibold text-[#22304b] dark:text-white">{report.month}</p>
+                <p className="mt-2 text-sm leading-6 text-[#67758f] dark:text-[#9aa4b8]">{report.note}</p>
               </div>
             ))}
           </div>
