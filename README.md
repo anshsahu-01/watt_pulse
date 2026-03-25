@@ -195,4 +195,4 @@ npm run build
 
 ## Current Status
 
-Watt Pulse is set up as a polished MVP / deployable dashboard application with authentication, analytics UI, EmailJS-based support flows, and production-oriented hardening already in place.
+Watt Pulse is set up as a polished MVP / deployable dashboard application with authentication, analytics UI, EmailJS-based support flows, and production oriented hardening already in place,
