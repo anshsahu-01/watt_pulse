@@ -1,6 +1,8 @@
 import AppShell from "@/components/AppShell";
 import { requireUser } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 const notifications = [
   {
     type: "Sensor Repair",

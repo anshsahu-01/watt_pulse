@@ -4,6 +4,8 @@ import Card from "@/components/Card";
 import { requireUser } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard";
 
+export const dynamic = "force-dynamic";
+
 export default async function CarbonPage() {
   const user = await requireUser();
   const data = await getDashboardData();

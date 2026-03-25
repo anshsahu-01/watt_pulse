@@ -2,6 +2,8 @@ import AppShell from "@/components/AppShell";
 import { requireUser } from "@/lib/auth";
 import SettingsForm from "@/components/SettingsForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function SettingsPage() {
   const user = await requireUser();
 

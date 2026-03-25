@@ -7,6 +7,8 @@ import CardSection from "@/components/CardSection";
 import { requireUser } from "@/lib/auth";
 import { getAlertTone, getDashboardData } from "@/lib/dashboard";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const user = await requireUser();
   const data = await getDashboardData();

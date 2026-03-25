@@ -3,6 +3,8 @@ import CallbackRequestForm from "@/components/CallbackRequestForm";
 import ContactForm from "@/components/ContactForm";
 import { requireUser } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function MailPage() {
   const user = await requireUser();
 
