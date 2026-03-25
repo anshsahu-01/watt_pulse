@@ -31,7 +31,11 @@ export default function BarChart({ data }) {
   }
 
   const options = {
-    chart: { type: "bar", toolbar: { show: false } },
+    chart: {
+      type: "bar",
+      toolbar: { show: false },
+      animations: { enabled: false },
+    },
     colors: ["#246dec", "#4f35a1"],
     plotOptions: {
       bar: {

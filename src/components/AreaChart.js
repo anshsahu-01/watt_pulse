@@ -25,7 +25,11 @@ export default function AreaChart({ data, title = "Monthly Consumption Trends" }
   };
 
   const options = {
-    chart: { type: "area", toolbar: { show: false } },
+    chart: {
+      type: "area",
+      toolbar: { show: false },
+      animations: { enabled: false },
+    },
     colors: ["#246dec", "#4f35a1"],
     dataLabels: { enabled: false },
     stroke: { curve: "smooth", width: 3 },

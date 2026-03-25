@@ -51,7 +51,7 @@ export default function ChatWidget() {
     event.preventDefault();
     const trimmed = input.trim();
 
-    if (!trimmed) {
+    if (!trimmed || trimmed.length > 500) {
       return;
     }
 
