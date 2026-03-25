@@ -26,28 +26,32 @@ export default function AuthForm({ mode = "login" }) {
     setMessage("");
 
     startTransition(async () => {
-      const endpoint =
-        mode === "login" ? "/api/auth/login" : "/api/auth/signup";
+      try {
+        const endpoint =
+          mode === "login" ? "/api/auth/login" : "/api/auth/signup";
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        });
 
-      const payload = await response.json();
+        const payload = await response.json();
 
-      if (!response.ok) {
-        setMessage(payload.message || "Unable to continue.");
-        return;
-      }
+        if (!response.ok) {
+          setMessage(payload.message || "Unable to continue.");
+          return;
+        }
 
-      setMessage(payload.message);
+        setMessage(payload.message);
 
-      if (payload.redirectTo) {
-        router.push(payload.redirectTo);
+        if (payload.redirectTo) {
+          router.push(payload.redirectTo);
+        }
+      } catch {
+        setMessage("Request failed. Check deployment config and database connectivity.");
       }
     });
   }

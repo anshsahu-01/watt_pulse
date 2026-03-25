@@ -6,6 +6,25 @@ if (!global.mongoose) {
   global.mongoose = cached;
 }
 
+function getConnectionOptions(mongoUri) {
+  const options = {
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 20000,
+  };
+
+  try {
+    const pathname = new URL(mongoUri).pathname.replace(/^\/+/, "");
+
+    if (!pathname) {
+      options.dbName = process.env.MONGO_DB_NAME || "wattpulse";
+    }
+  } catch {
+    options.dbName = process.env.MONGO_DB_NAME || "wattpulse";
+  }
+
+  return options;
+}
+
 async function connectDB() {
   const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
 
@@ -16,7 +35,9 @@ async function connectDB() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(mongoUri).then((instance) => instance);
+    cached.promise = mongoose
+      .connect(mongoUri, getConnectionOptions(mongoUri))
+      .then((instance) => instance);
   }
 
   cached.conn = await cached.promise;

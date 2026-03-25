@@ -71,19 +71,21 @@ const seedTelemetry = {
 };
 
 export async function ensureTelemetrySeed() {
-  await connectDB();
-  const existing = await Telemetry.findOne().lean();
+  try {
+    await connectDB();
+    const existing = await Telemetry.findOne().lean();
 
-  if (existing) {
-    return existing;
+    if (existing) {
+      return existing;
+    }
+
+    const created = await Telemetry.create(seedTelemetry);
+    return created.toObject();
+  } catch {
+    return { ...seedTelemetry };
   }
-
-  const created = await Telemetry.create(seedTelemetry);
-  return created.toObject();
 }
 
 export async function getTelemetryData() {
-  await connectDB();
-  const telemetry = await ensureTelemetrySeed();
-  return telemetry;
+  return ensureTelemetrySeed();
 }
