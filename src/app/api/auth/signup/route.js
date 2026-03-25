@@ -1,8 +1,18 @@
 import { NextResponse } from "next/server";
 import { SESSION_COOKIE } from "@/lib/auth";
+import { applyRateLimit } from "@/lib/rate-limit";
 import { registerUser } from "@/services/authService";
 
 export async function POST(request) {
+  const limit = applyRateLimit(request, "auth");
+
+  if (!limit.ok) {
+    return NextResponse.json(
+      { message: "Too many signup attempts. Try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
+
   const payload = await request.json();
   const result = await registerUser(payload);
 
@@ -24,6 +34,7 @@ export async function POST(request) {
   response.cookies.set(SESSION_COOKIE, result.session.token, {
     httpOnly: true,
     sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
     path: "/",
     expires: result.session.expiresAt,
   });

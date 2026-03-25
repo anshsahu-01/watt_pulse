@@ -1,11 +1,21 @@
 import { NextResponse } from "next/server";
 import { appendCallbackRequest } from "@/lib/callback-store";
+import { applyRateLimit } from "@/lib/rate-limit";
 
 function isValidPhone(phone) {
   return /^\d{10}$/.test(phone);
 }
 
 export async function POST(request) {
+  const limit = applyRateLimit(request, "form");
+
+  if (!limit.ok) {
+    return NextResponse.json(
+      { success: false, message: "Too many callback requests. Try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
+
   const { phone, message = "" } = await request.json();
   const trimmedPhone = String(phone || "").trim();
   const trimmedMessage = String(message || "").trim();

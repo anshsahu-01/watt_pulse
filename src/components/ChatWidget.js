@@ -11,15 +11,33 @@ const starterMessages = [
 
 function BotIcon() {
   return (
-    <svg viewBox="0 0 64 64" className="h-9 w-9" fill="none" aria-hidden="true">
-      <rect x="14" y="18" width="36" height="28" rx="12" fill="white" fillOpacity="0.16" />
-      <rect x="18" y="22" width="28" height="20" rx="8" fill="white" />
-      <circle cx="28" cy="32" r="3.5" fill="#4e42d4" />
-      <circle cx="36" cy="32" r="3.5" fill="#4e42d4" />
-      <path d="M25 39c2.5 2 11.5 2 14 0" stroke="#4e42d4" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M32 11v8" stroke="white" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="32" cy="9" r="4" fill="#d9d3ff" />
-    </svg>
+    <svg viewBox="0 0 65 65" className="h-15 w-15 cursor-pointer" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64">
+      <stop offset="0%" stopColor="#7dd3fc"/>
+      <stop offset="100%" stopColor="#34d399"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="32" cy="32" r="30" fill="url(#bg)" />
+
+  <rect x="16" y="18" width="32" height="24" rx="12" fill="white"/>
+  <rect x="20" y="22" width="24" height="16" rx="8" fill="#3f3d56"/>
+
+  <circle cx="26" cy="30" r="2.5" fill="#34d399"/>
+  <path d="M34 30c2 2 4 2 6 0" stroke="#34d399" strokeWidth="2" strokeLinecap="round"/>
+
+  <line x1="24" y1="14" x2="24" y2="18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+  <circle cx="24" cy="12" r="2" fill="white"/>
+
+  <line x1="40" y1="14" x2="40" y2="18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+  <circle cx="40" cy="12" r="2" fill="white"/>
+
+  <rect x="12" y="26" width="4" height="10" rx="2" fill="white"/>
+  <rect x="48" y="26" width="4" height="10" rx="2" fill="white"/>
+
+  <rect x="22" y="42" width="20" height="8" rx="5" fill="white"/>
+</svg>
   );
 }
 

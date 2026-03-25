@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
+import { applyRateLimit } from "@/lib/rate-limit";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 export async function POST(request) {
+  const limit = applyRateLimit(request, "chat");
+
+  if (!limit.ok) {
+    return NextResponse.json(
+      { reply: "Too many chat requests. Try again shortly." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
+
   const { message } = await request.json();
   const openAiKey = process.env.OPENAI_API_KEY;
   const openRouterKey = process.env.OPENROUTER_API_KEY;

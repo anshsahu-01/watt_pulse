@@ -30,3 +30,7 @@ export function verifyPassword(password, storedHash) {
 export function createSessionToken() {
   return `${randomUUID()}-${randomBytes(24).toString("hex")}`;
 }
+
+export function createOtpCode() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}

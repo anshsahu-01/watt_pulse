@@ -18,6 +18,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    resetOtpCode: {
+      type: String,
+      default: null,
+    },
+    resetOtpExpiresAt: {
+      type: Date,
+      default: null,
+    },
     notificationsEnabled: {
       type: Boolean,
       default: true,

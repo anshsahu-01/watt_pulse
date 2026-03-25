@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { applyRateLimit } from "@/lib/rate-limit";
 import { createMailTransport, getAdminAddress } from "@/lib/mailer";
 
 export const runtime = "nodejs";
@@ -11,6 +12,15 @@ function formatTimestamp(date) {
 }
 
 export async function POST(request) {
+  const limit = applyRateLimit(request, "form");
+
+  if (!limit.ok) {
+    return NextResponse.json(
+      { message: "Too many contact requests. Try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
+
   const { name, email, subject, message } = await request.json();
   const trimmedName = String(name || "").trim();
   const trimmedEmail = String(email || "").trim();

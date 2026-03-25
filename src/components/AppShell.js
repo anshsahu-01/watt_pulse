@@ -1,9 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import ChatWidget from "@/components/ChatWidget";
+
+const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function AppShell({
   pathname,

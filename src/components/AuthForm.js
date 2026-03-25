@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -93,6 +94,14 @@ export default function AuthForm({ mode = "login" }) {
           required
         />
       </label>
+
+      {mode === "login" ? (
+        <div className="flex justify-end">
+          <Link href="/forgot-password" className="text-sm font-medium text-[#4e42d4]">
+            Forgot password?
+          </Link>
+        </div>
+      ) : null}
 
       <button
         type="submit"
