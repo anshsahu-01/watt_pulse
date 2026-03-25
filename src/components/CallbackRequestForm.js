@@ -60,20 +60,25 @@ export default function CallbackRequestForm() {
           { publicKey },
         );
 
-        const response = await fetch("/api/callback", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
-        });
+        try {
+          const response = await fetch("/api/callback", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form),
+          });
 
-        const payload = await response.json();
+          const payload = await response.json();
 
-        if (!response.ok || !payload.success) {
-          throw new Error(
-            payload.message || "Unable to store callback request right now.",
-          );
+          if (!response.ok || !payload.success) {
+            console.error(
+              "Callback request storage failed:",
+              payload.message || "Unknown callback storage error.",
+            );
+          }
+        } catch (storageError) {
+          console.error("Callback request storage failed:", storageError);
         }
 
         setStatus("Callback request submitted successfully.");
