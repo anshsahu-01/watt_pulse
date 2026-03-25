@@ -32,13 +32,14 @@ export async function deleteSession(token) {
 }
 
 export async function getCurrentUser() {
-  await connectDB();
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value;
 
   if (!token) {
     return null;
   }
+
+  await connectDB();
 
   const session = await Session.findOne({ token }).lean();
 
