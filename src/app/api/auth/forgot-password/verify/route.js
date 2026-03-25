@@ -6,6 +6,8 @@ import PasswordResetOtp from "@/models/PasswordResetOtp";
 import User from "@/models/User";
 import { validateEmail, validatePassword } from "@/utils/validators";
 
+export const runtime = "nodejs";
+
 export async function POST(request) {
   const limit = applyRateLimit(request, "auth");
 

@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { SESSION_COOKIE } from "@/lib/auth";
+import { getDatabaseErrorMessage } from "@/lib/api-errors";
 import { applyRateLimit } from "@/lib/rate-limit";
 import { authenticateUser } from "@/services/authService";
+
+export const runtime = "nodejs";
 
 export async function POST(request) {
   try {
@@ -41,9 +44,16 @@ export async function POST(request) {
     });
 
     return response;
-  } catch {
+  } catch (error) {
+    console.error("Login route failed:", error);
+
     return NextResponse.json(
-      { message: "Login failed due to a server or database issue." },
+      {
+        message: getDatabaseErrorMessage(
+          error,
+          "Login failed due to a server or database issue.",
+        ),
+      },
       { status: 500 },
     );
   }

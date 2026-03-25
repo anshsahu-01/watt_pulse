@@ -6,6 +6,8 @@ import { applyRateLimit } from "@/lib/rate-limit";
 import User from "@/models/User";
 import { validateEmail } from "@/utils/validators";
 
+export const runtime = "nodejs";
+
 export async function POST(request) {
   const limit = applyRateLimit(request, "auth");
 
