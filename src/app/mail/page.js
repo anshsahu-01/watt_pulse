@@ -35,10 +35,10 @@ export default async function MailPage() {
             </div>
             <div className="rounded-2xl bg-[#f6f8fd] px-4 py-4 dark:bg-[#2b2b2b]">
               <div className="text-sm uppercase tracking-[0.2em] text-[#5a4fd3]">
-                Callback Requests
+                Contact Delivery
               </div>
               <div className="mt-3 text-[1rem] text-[#22304b] dark:text-white">
-                Callback requests are emailed to the admin and also stored locally for quick review.
+                Contact messages and callback requests are sent directly through EmailJS, and callback requests are also stored locally.
               </div>
             </div>
           </div>

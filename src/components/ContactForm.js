@@ -1,5 +1,6 @@
 "use client";
 
+import emailjs from "@emailjs/browser";
 import { useState, useTransition } from "react";
 
 const initialState = {
@@ -30,25 +31,45 @@ export default function ContactForm({ user }) {
     setDetail("");
 
     startTransition(async () => {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+      try {
+        const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+        const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+        const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-      const payload = await response.json();
-      setStatus(payload.message || "Unable to send message.");
-      setDetail(payload.detail || "");
+        if (!serviceId || !templateId || !publicKey) {
+          setStatus("Email service is not configured.");
+          return;
+        }
 
-      if (response.ok) {
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            name: form.name,
+            email: form.email,
+            from_name: form.name,
+            from_email: form.email,
+            reply_to: form.email,
+            title: form.subject,
+            subject: form.subject,
+            contact_subject: form.subject,
+            message: form.message,
+            contact_message: form.message,
+            app_name: "Watt Pulse",
+          },
+          { publicKey },
+        );
+
+        setStatus("Message sent successfully.");
         setForm((current) => ({
           ...current,
           subject: "",
           message: "",
         }));
         window.alert("Message sent successfully.");
+      } catch (error) {
+        setStatus("Unable to send your message right now.");
+        setDetail(error instanceof Error ? error.message : "Unexpected EmailJS error.");
       }
     });
   }

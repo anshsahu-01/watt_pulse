@@ -1,15 +1,5 @@
 import { NextResponse } from "next/server";
 import { appendCallbackRequest } from "@/lib/callback-store";
-import { createMailTransport, getAdminAddress } from "@/lib/mailer";
-
-export const runtime = "nodejs";
-
-function formatTimestamp(date) {
-  return new Intl.DateTimeFormat("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
 
 function isValidPhone(phone) {
   return /^\d{10}$/.test(phone);
@@ -40,22 +30,6 @@ export async function POST(request) {
   const createdAt = new Date();
 
   try {
-    const adminAddress = getAdminAddress();
-    const transporter = createMailTransport();
-
-    await transporter.sendMail({
-      from: adminAddress,
-      to: adminAddress,
-      subject: "New Callback Request",
-      text: [
-        "A new callback request was submitted.",
-        "",
-        `Phone number: ${trimmedPhone}`,
-        `Message: ${trimmedMessage || "No message provided."}`,
-        `Timestamp: ${formatTimestamp(createdAt)}`,
-      ].join("\n"),
-    });
-
     await appendCallbackRequest({
       phone: trimmedPhone,
       message: trimmedMessage,

@@ -27,6 +27,14 @@ function MailIcon() {
   );
 }
 
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.8l-1.3 1.3a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 1.8-.6l3 .5A2 2 0 0 1 22 16.9Z" />
+    </svg>
+  );
+}
+
 export function BrandMark({ compact = false, light = false }) {
   const stroke = light ? "#ffffff" : "#102522";
   const fill = light ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.82)";
@@ -71,7 +79,7 @@ export function BrandMark({ compact = false, light = false }) {
 function ActionIcon({ label }) {
   const icons = {
     alerts: <BellIcon />,
-    inbox: <MailIcon />,
+    inbox: <PhoneIcon />,
   };
 
   const hrefs = {

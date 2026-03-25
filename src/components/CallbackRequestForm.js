@@ -1,5 +1,6 @@
 "use client";
 
+import emailjs from "@emailjs/browser";
 import { useState, useTransition } from "react";
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
 export default function CallbackRequestForm() {
   const [form, setForm] = useState(initialState);
   const [status, setStatus] = useState("");
+  const [detail, setDetail] = useState("");
   const [isPending, startTransition] = useTransition();
 
   function updateField(event) {
@@ -20,29 +22,72 @@ export default function CallbackRequestForm() {
   function handleSubmit(event) {
     event.preventDefault();
     setStatus("");
+    setDetail("");
 
     startTransition(async () => {
-      const response = await fetch("/api/callback", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-      const payload = await response.json();
-
-      if (response.ok && payload.success) {
-        setStatus("Callback request submitted successfully.");
-        setForm(initialState);
-        window.alert("Callback request submitted successfully.");
+      if (!serviceId || !templateId || !publicKey) {
+        setStatus("Email service is not configured.");
         return;
       }
 
-      const message =
-        payload.message || "Unable to submit callback request right now.";
-      setStatus(message);
-      window.alert(message);
+      try {
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            name: "Callback Request",
+            email: "callback@wattpulse.local",
+            from_name: "Callback Request",
+            from_email: "callback@wattpulse.local",
+            reply_to: "callback@wattpulse.local",
+            title: "New Callback Request",
+            subject: "New Callback Request",
+            contact_subject: "New Callback Request",
+            message: [
+              `Phone number: ${form.phone}`,
+              `Message: ${form.message || "No message provided."}`,
+            ].join("\n"),
+            contact_message: [
+              `Phone number: ${form.phone}`,
+              `Message: ${form.message || "No message provided."}`,
+            ].join("\n"),
+            app_name: "Watt Pulse",
+          },
+          { publicKey },
+        );
+
+        const response = await fetch("/api/callback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        });
+
+        const payload = await response.json();
+
+        if (!response.ok || !payload.success) {
+          throw new Error(
+            payload.message || "Unable to store callback request right now.",
+          );
+        }
+
+        setStatus("Callback request submitted successfully.");
+        setForm(initialState);
+        window.alert("Callback request submitted successfully.");
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Unable to submit callback request right now.";
+        setStatus("Unable to submit callback request right now.");
+        setDetail(message);
+        window.alert(message);
+      }
     });
   }
 
@@ -95,7 +140,8 @@ export default function CallbackRequestForm() {
 
       {status ? (
         <div className="mt-5 rounded-2xl border border-[#d9dfeb] bg-[#f6f8fd] px-4 py-3 text-sm text-[#22304b] dark:border-[#4a4a4a] dark:bg-[#2b2b2b] dark:text-white">
-          {status}
+          <div>{status}</div>
+          {detail ? <div className="mt-2 text-xs opacity-80">{detail}</div> : null}
         </div>
       ) : null}
 
