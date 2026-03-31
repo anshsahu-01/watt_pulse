@@ -75,7 +75,7 @@ const navItems = [
 export default function Sidebar({ pathname, user, isOpen = false, onClose }) {
   return (
     <aside
-      className={`fixed left-0 top-0 z-50 flex h-screen w-[290px] flex-col bg-[#2e3d47] px-5 py-6 text-white transition-transform duration-300 dark:bg-[#1a1a1a] xl:z-30 ${
+      className={`fixed left-0 top-0 z-50 flex h-screen w-[min(84vw,290px)] flex-col bg-[#2e3d47] px-4 py-5 text-white transition-transform duration-300 dark:bg-[#1a1a1a] xl:w-[290px] xl:px-5 xl:py-6 xl:z-30 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } xl:translate-x-0`}
     >
@@ -98,7 +98,7 @@ export default function Sidebar({ pathname, user, isOpen = false, onClose }) {
         </div>
       </div>
 
-      <nav className="mt-8 grid gap-2.5">
+      <nav className="mt-6 grid gap-2.5 xl:mt-8">
         {navItems.map((item) => {
           const active = pathname === item.href;
           return (
@@ -121,8 +121,8 @@ export default function Sidebar({ pathname, user, isOpen = false, onClose }) {
         })}
       </nav>
 
-      <div className="mt-auto space-y-4">
-        <div className="rounded-2xl bg-white/6 p-4 dark:bg-[#242424]">
+      <div className="mt-auto space-y-3 xl:space-y-4">
+        <div className="rounded-2xl bg-white/6 p-3.5 dark:bg-[#242424] xl:p-4">
           <div className="text-xs uppercase tracking-[0.28em] text-white/58">
             Signed in as
           </div>

@@ -83,9 +83,9 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
       {open ? (
-        <div className="mb-4 flex h-[500px] w-[340px] flex-col overflow-hidden rounded-[1.5rem] border border-[#dfe5f1] bg-white shadow-[0_20px_60px_rgba(24,39,75,0.18)] dark:border-[#353535] dark:bg-[#242424]">
+        <div className="mb-3 flex h-[440px] w-[min(92vw,340px)] flex-col overflow-hidden rounded-[1.5rem] border border-[#dfe5f1] bg-white shadow-[0_20px_60px_rgba(24,39,75,0.18)] dark:border-[#353535] dark:bg-[#242424] sm:mb-4 sm:h-[500px]">
           <div className="flex items-center justify-between bg-[#4e42d4] px-4 py-3 text-white">
             <div>
               <div className="text-sm font-semibold">Watt Pulse Assistant</div>
@@ -138,7 +138,7 @@ export default function ChatWidget() {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="grid h-16 w-16 place-items-center rounded-full bg-[#4e42d4] text-white shadow-[0_18px_40px_rgba(78,66,212,0.35)] transition hover:bg-[#4338ca]"
+        className="grid h-14 w-14 place-items-center rounded-full bg-[#4e42d4] text-white shadow-[0_18px_40px_rgba(78,66,212,0.35)] transition hover:bg-[#4338ca] sm:h-16 sm:w-16"
         aria-label="Open chatbot"
       >
         <BotIcon />

@@ -1,7 +1,7 @@
 import connectDB from "@/lib/db";
 import Telemetry from "@/models/Telemetry";
 
-const TELEMETRY_REFRESH_MS = 1000 * 60 * 4;
+const TELEMETRY_REFRESH_MS = 1000 * 10;
 
 const seedTelemetry = {
   siteName: "EcoSphere Main Campus",

@@ -72,11 +72,11 @@ export default function AreaChart({ data, title = "Monthly Consumption Trends" }
   ];
 
   return (
-    <div className="rounded-[1.5rem] border border-[#dfe5f1] bg-white p-5 shadow-[0_12px_35px_rgba(24,39,75,0.06)] dark:border-[#353535] dark:bg-[#242424]">
+    <div className="overflow-hidden rounded-[1.5rem] border border-[#dfe5f1] bg-white p-4 shadow-[0_12px_35px_rgba(24,39,75,0.06)] dark:border-[#353535] dark:bg-[#242424] sm:p-5">
       <h3 className="mb-4 text-lg font-semibold text-[#22304b] dark:text-white">
         {title}
       </h3>
-      <Chart options={options} series={series} type="area" height={300} />
+      <Chart options={options} series={series} type="area" height={280} />
     </div>
   );
 }

@@ -80,14 +80,14 @@ export default function Card({
   suffix,
 }) {
   return (
-    <article className="rounded-[0.95rem] border border-[#dbe3f0] bg-white px-5 py-4 shadow-[0_6px_18px_rgba(24,39,75,0.08)] dark:border-[#3a3a3a] dark:bg-[#242424] xl:px-5">
+    <article className="rounded-[0.95rem] border border-[#dbe3f0] bg-white px-4 py-4 shadow-[0_6px_18px_rgba(24,39,75,0.08)] dark:border-[#3a3a3a] dark:bg-[#242424] sm:px-5 xl:px-5">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="text-[0.95rem] font-medium uppercase tracking-[0.08em] text-[#2d6bff] dark:text-[#2d6bff]">
+          <div className="text-[0.82rem] font-medium uppercase tracking-[0.08em] text-[#2d6bff] dark:text-[#2d6bff] sm:text-[0.95rem]">
             {title}
           </div>
-          <div className="mt-3 text-[1.05rem] font-medium text-[#2d6bff] dark:text-[#2d6bff]">
-            <span className="font-medium text-[1.05rem]">
+          <div className="mt-3 text-[1rem] font-medium text-[#2d6bff] dark:text-[#2d6bff] sm:text-[1.05rem]">
+            <span className="font-medium text-[1rem] sm:text-[1.05rem]">
               {value}
             </span>
             {suffix ? <span className="ml-1">{suffix}</span> : null}
@@ -97,7 +97,7 @@ export default function Card({
           <CardIcon title={title} />
         </div>
       </div>
-      {detail ? <div className="mt-3 text-[0.84rem] leading-5 text-[#7b879e] dark:text-[#9aa4b8]">{detail}</div> : null}
+      {detail ? <div className="mt-3 text-[0.78rem] leading-5 text-[#7b879e] dark:text-[#9aa4b8] sm:text-[0.84rem]">{detail}</div> : null}
     </article>
   );
 }

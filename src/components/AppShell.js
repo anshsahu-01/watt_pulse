@@ -49,7 +49,7 @@ export default function AppShell({
           user={user}
           onMenuClick={() => setMobileSidebarOpen((current) => !current)}
         />
-        <div className="section-grid px-5 py-5 pt-24 md:px-7 md:py-7 md:pt-28 xl:px-8 xl:py-8 xl:pt-28">
+        <div className="section-grid px-4 py-4 pt-[8.75rem] sm:px-5 sm:pt-[9.25rem] md:px-7 md:py-7 md:pt-28 xl:px-8 xl:py-8 xl:pt-28">
           {children}
         </div>
         <ChatWidget />
