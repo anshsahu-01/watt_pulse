@@ -36,7 +36,7 @@ export default async function MailPage() {
               </div>
             </div>
             <div className="rounded-2xl bg-[#f6f8fd] px-4 py-4 dark:bg-[#2b2b2b]">
-              <div className="text-sm uppercase tracking-[0.2em] text-[#5a4fd3]">
+              <div className="text-sm uppercase tracking-[0.2em] text-[#554acf]">
                 Contact Delivery
               </div>
               <div className="mt-3 text-[1rem] text-[#22304b] dark:text-white">
