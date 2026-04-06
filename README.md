@@ -84,7 +84,7 @@ NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=
 EMAIL_USER=
 EMAIL_PASS=
 
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=https://watt-pulse.vercel.app/
 ```
 
 ### Variable Notes
